@@ -1,0 +1,29 @@
+resources:
+  - name: blink
+    type: git
+    source:
+      uri: https://github.com/carloscabanero/blink
+      branch: devel
+      private_key: {{private-repo-key}}
+  - name: ci
+    type: git
+    source:
+      uri: https://github.com/carloscabanero/blinkci
+      branch: devel
+      private_key: {{private-repo-key}}
+      
+jobs:
+  - name: build-blink
+    plan:
+      - get: blink
+      - get: ci
+      - task: build
+        config:
+          platform: darwin
+          run:
+            path: ./ci/build-blink.sh
+          inputs:
+            - name: blink
+            - name: ci
+          outputs:
+            - name: release
