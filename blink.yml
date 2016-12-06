@@ -15,6 +15,22 @@ resources:
       release: false
       pre-release: true
 
+  - name: build-mosh
+    type: git
+    source:
+      uri: https://github.com/blinksh/build-mosh
+      branch: master
+      private_key: {{private-repo-key}}
+
+  - name: libmoshios-release
+    type: github-release
+    source:
+      user: blinksh
+      access_token: {{currents-gh-access-token}}
+      repository: build-mosh
+      release: false
+      pre-release: true
+
   - name: blink
     type: git
     source:
@@ -49,6 +65,27 @@ jobs:
         tag: release/VERSION
         globs:
           - release/protobuf-*.tar.gz
+
+  - name: build-libmoshios
+    plan:
+    - get: build-mosh
+    - get: ci
+    - task: build
+      config:
+        platform: darwin
+        run:
+          path: ./ci/build-libmoshios.sh
+        inputs:
+          - name: build-mosh
+          - name: ci
+        outputs:
+          - name: release
+    - put: libmoshios-release
+      params:
+        name: release/VERSION
+        tag: release/VERSION
+        globs:
+          - release/libmoshios-*.framework.tar.gz
 
   - name: build-blink
     plan:
