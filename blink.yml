@@ -1,18 +1,55 @@
 resources:
+  - name: build-protobuf
+    type: git
+    source:
+      uri: https://github.com/blinksh/build-protobuf
+      branch: master
+      private_key: {{private-repo-key}}
+
+  - name: protobuf-release
+    type: github-release
+    source:
+      user: blinksh
+      access_token: {{currents-gh-access-token}}
+      repository: build-protobuf
+      release: false
+      pre-release: true
+
   - name: blink
     type: git
     source:
-      uri: https://github.com/carloscabanero/blink
-      branch: devel
+      uri: git@github.com:carloscabanero/blink
+      branch: ci
       private_key: {{private-repo-key}}
   - name: ci
     type: git
     source:
-      uri: https://github.com/carloscabanero/blinkci
-      branch: devel
+      uri: git@github.com:carloscabanero/blinkci
+      branch: master
       private_key: {{private-repo-key}}
-      
+
 jobs:
+  - name: build-protobuf-libs
+    plan:
+    - get: build-protobuf
+    - get: ci
+    - task: build
+      config:
+        platform: darwin
+        run:
+          path: ./ci/build-protobuf.sh
+        inputs:
+          - name: build-protobuf
+          - name: ci
+        outputs:
+          - name: release
+    - put: protobuf-release
+      params:
+        name: release/VERSION
+        tag: release/VERSION
+        globs:
+          - release/protobuf-*.tar.gz
+
   - name: build-blink
     plan:
       - get: blink
