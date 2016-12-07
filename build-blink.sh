@@ -1,10 +1,10 @@
 #!/bin/bash
 
-./blink/get_frameworks.sh
-
-gym -c --use_legacy_build_api \
+# Compile as a worker
+chown -R worker ..
+su worker -c "./blink/get_frameworks.sh && gym -c \
     --scheme Blink \
     --project ./Blink/Blink.xcodeproj \
-    --output_directory ./release/ \
+    --output_directory ./release/"
 #    --build_path ./release/
 # profiles, signing, team, etc...

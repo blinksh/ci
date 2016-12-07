@@ -59,13 +59,13 @@ resources:
   - name: blink
     type: git
     source:
-      uri: git@github.com:carloscabanero/blink
-      branch: ci
+      uri: git@github.com:blinksh/blink
+      branch: master
       private_key: {{private-repo-key}}
   - name: ci
     type: git
     source:
-      uri: git@github.com:carloscabanero/blinkci
+      uri: git@github.com:blinksh/ci
       branch: master
       private_key: {{private-repo-key}}
 
