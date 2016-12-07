@@ -15,6 +15,31 @@ resources:
       release: false
       pre-release: true
 
+  - name: build-libssh2
+    type: git
+    source:
+      uri: https://github.com/blinksh/libssh2-for-iOS
+      branch: master
+      private_key: {{private-repo-key}}
+
+  - name: libssh2-release
+    type: github-release
+    source:
+      user: blinksh
+      access_token: {{currents-gh-access-token}}
+      repository: libssh2-for-iOS
+      release: false
+      pre-release: true
+
+  - name: openssl-release
+    type: github-release
+    source:
+      user: blinksh
+      access_token: {{currents-gh-access-token}}
+      repository: OpenSSL-for-iPhone
+      release: false
+      pre-release: true
+
   - name: build-mosh
     type: git
     source:
@@ -86,6 +111,34 @@ jobs:
         tag: release/VERSION
         globs:
           - release/libmoshios-*.framework.tar.gz
+
+  - name: build-libssh2
+    plan:
+    - get: build-libssh2
+    - get: ci
+    - task: build
+      config:
+        platform: darwin
+        run:
+          path: ./ci/build-libssh2.sh
+        inputs:
+          - name: build-libssh2
+          - name: ci
+        outputs:
+          - name: release
+    - put: libssh2-release
+      params:
+        name: release/LIBSSH2_VER
+        tag: release/LIBSSH2_VER
+        globs:
+          - release/libssh2-*.framework.tar.gz
+    - put: openssl-release
+      params:
+        name: release/OPENSSL_VER
+        tag: release/OPENSSL_VER
+        globs:
+          - release/openssl-*.framework.tar.gz
+
 
   - name: build-blink
     plan:
