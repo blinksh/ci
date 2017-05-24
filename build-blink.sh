@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Compile as a worker
-chown -R worker ..
+chown -RHL worker ..
 su worker -c "./blink/get_frameworks.sh && gym -c \
     --scheme Blink \
     --project ./Blink/Blink.xcodeproj \
