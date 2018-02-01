@@ -2,7 +2,7 @@
 
 # Compile as a worker
 chown -RHL worker ..
-su worker -c "./blink/get_frameworks.sh && fastlane gym -c \
+su worker -c "./blink/get_frameworks.sh && /usr/local/bin/fastlane gym -c \
     --scheme Blink \
     --project ./Blink/Blink.xcodeproj \
     --output_directory ./release/"
