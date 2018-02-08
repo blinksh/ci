@@ -1,5 +1,7 @@
 #!/bin/bash
 
+./unlock_keychain.sh > /dev/null
+
 # Compile as a worker
 chown -RHL worker ..
 su worker -c "./blink/get_frameworks.sh && gym -c \
