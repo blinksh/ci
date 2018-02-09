@@ -163,6 +163,7 @@ jobs:
         config:
           platform: darwin
           run:
+            user: worker
             path: ./ci/build-blink.sh
           inputs:
             - name: blink
