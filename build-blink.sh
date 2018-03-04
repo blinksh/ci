@@ -1,7 +1,7 @@
 #!/bin/bash
 
 PATH=$PATH:/usr/local/bin
-./unlock_keychain.sh > /dev/null
+./ci/unlock_keychain.sh > /dev/null
 
 ./blink/get_frameworks.sh && fastlane gym -c \
     --scheme Blink \
