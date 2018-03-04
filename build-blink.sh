@@ -7,5 +7,3 @@ PATH=$PATH:/usr/local/bin
     --scheme Blink \
     --project ./Blink/Blink.xcodeproj \
     --output_directory ./release/
-#    --build_path ./release/
-# profiles, signing, team, etc...
