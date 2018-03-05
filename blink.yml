@@ -70,17 +70,17 @@ resources:
       branch: raw
       private_key: {{private-repo-key}}
 
-  - name: blink-next
-    type: git
-    source:
-      uri: git@github.com:blinksh/blink
-      branch: next
-      private_key: {{private-repo-key}}
-
   - name: ci
     type: git
     source:
       uri: git@github.com:blinksh/ci
+      branch: master
+      private_key: {{private-repo-key}}
+
+  - name: pragmatapro
+    type: git
+    source:
+      uri: git@github.com:carloscabanero/pragmatapro
       branch: master
       private_key: {{private-repo-key}}
 
@@ -163,14 +163,20 @@ jobs:
     plan:
       - get: blink
       - get: ci
+      - get: pragmatapro
       - task: build
         config:
           platform: darwin
           run:
-            path: ./ci/build-blink.sh
+            path: /bin/bash
+            args:
+            - -c
+            - |
+              source ~/.bashrc && ./ci/build-blink.sh
           inputs:
             - name: blink
             - name: ci
+            - name: pragmatapro
           outputs:
             - name: release
 
@@ -178,6 +184,7 @@ jobs:
     plan:
       - get: blink-raw
       - get: ci
+      - get: pragmatapro
       - task: build
         config:
           platform: darwin
@@ -191,21 +198,6 @@ jobs:
             - name: blink-raw
               path: blink
             - name: ci
-          outputs:
-            - name: release
-
-  - name: build-blink-next
-    plan:
-      - get: blink-next
-      - get: ci
-      - task: build
-        config:
-          platform: darwin
-          run:
-            path: ./ci/build-blink.sh
-          inputs:
-            - name: blink-next
-              path: blink
-            - name: ci
+            - name: pragmatapro
           outputs:
             - name: release
