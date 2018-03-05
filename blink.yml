@@ -114,7 +114,11 @@ jobs:
       config:
         platform: darwin
         run:
-          path: ./ci/build-libmoshios.sh
+          path: /bin/bash
+          args:
+          - -c
+          - |
+            source ~/.bashrc && ./ci/build-libmoshios.sh
         inputs:
           - name: build-mosh
           - name: ci
@@ -178,7 +182,11 @@ jobs:
         config:
           platform: darwin
           run:
-            path: ./ci/build-blink.sh
+            path: /bin/bash
+            args:
+            - -c
+            - |
+              source ~/.bashrc && ./ci/build-blink.sh
           inputs:
             - name: blink-raw
               path: blink
